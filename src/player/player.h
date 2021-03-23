@@ -12,6 +12,10 @@ public:
     player& operator=(player) noexcept;
 
     ~player();
+
+public:
+    void parse_array(const std::string&);
+
 protected:
     class core;
     std::unique_ptr<core> core_;

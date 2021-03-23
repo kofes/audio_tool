@@ -11,5 +11,13 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    for (std::string line; std::getline(std::cin, line);) {
+        try {
+            player.parse_array(line);
+        } catch(const std::exception& ex) {
+            log::error() << ex.what() << '\n';
+        }
+    }
+
     return 0;
 }
