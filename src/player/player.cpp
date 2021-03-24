@@ -47,6 +47,8 @@ namespace {
 class player::core {
 public:
     core(): generator_(random_device_()), distrubution_(0, count_tracks) {
+        std::fill(std::begin(tracks_to_play_), std::end(tracks_to_play_), track_state::DISCARDED);
+
         int result = 0;
         int flags = MIX_INIT_MP3;
 
@@ -80,7 +82,7 @@ public:
     std::vector<std::unique_ptr<audio::track_controller>> tracks_;
     std::array<std::chrono::milliseconds, count_tracks> periods_;
     std::array<std::chrono::time_point<std::chrono::system_clock>, count_tracks> timeouts_;
-    std::array<track_state, count_tracks> tracks_to_play_ = { track_state::DISCARDED };
+    std::array<track_state, count_tracks> tracks_to_play_;
 
 public:
     std::random_device random_device_;
