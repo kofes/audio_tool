@@ -2,7 +2,9 @@
 
 #include "../scope_guard.h"
 #include "../config.h"
-#include "../track/track.h"
+
+#include "../track/fabric.h"
+#include "../track/track_controller.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
@@ -18,12 +20,14 @@
 #include <map>
 
 #include <iterator>
+#include <algorithm>
 
 #include <mutex>
 #include <thread>
 #include <future>
 
 #include <random>
+
 
 using namespace custom;
 
@@ -73,7 +77,7 @@ public:
     }
 
 public:
-    std::vector<audio::track> tracks_;
+    std::vector<std::unique_ptr<audio::track_controller>> tracks_;
     std::array<std::chrono::milliseconds, count_tracks> periods_;
     std::array<std::chrono::time_point<std::chrono::system_clock>, count_tracks> timeouts_;
     std::array<track_state, count_tracks> tracks_to_play_ = { track_state::DISCARDED };
@@ -143,7 +147,8 @@ player::player(int argc, const char* const* const argv): core_(std::make_unique<
 
     core_->tracks_.reserve(count_tracks);
     for (auto i = 0; i < count_tracks; ++i) {
-        core_->tracks_.emplace_back(RESOURCES_PATH + std::string{"track"} + std::to_string(i+1) + ".mp3");
+        auto controller = audio::fabric::get_track_controller(audio::track_type::MP3, RESOURCES_PATH + std::string{"track"} + std::to_string(i+1) + ".mp3");
+        core_->tracks_.emplace_back(std::move(controller));
     }
 }
 
@@ -258,7 +263,11 @@ void player::play() {
     
     while (true) {
         for (auto i = 0; i < count_tracks; ++i) {
-            while (audio::track::is_playing()) {} // wait until playing
+            while (std::any_of(
+                std::begin(core_->tracks_),
+                std::end(core_->tracks_),
+                [](const auto& track) { return track->is_playing(); }
+            )) {} // wait until playing
 
             std::lock_guard<std::mutex> lock(core_->tracks_list_mutex_);
             if (core_->tracks_to_play_[i] == track_state::DISCARDED) {
@@ -274,7 +283,7 @@ void player::play() {
                 } else {
                     core_->tracks_to_play_[i] = track_state::PLAYED;
                 }
-                core_->tracks_[i].play();
+                core_->tracks_[i]->play();
                 core_->timeouts_[i] = current_time;
             }
         }
