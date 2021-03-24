@@ -247,7 +247,7 @@ void player::add_tracks_to_queue(const std::string& src) {
     parse_array(src);
 }
 
-void player::start() {
+void player::start_playing_in_background() {
     if (!core_) {
         return;
     }

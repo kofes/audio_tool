@@ -16,7 +16,7 @@ public:
 public:
     void add_tracks_to_queue(const std::string&);
 
-    void start();
+    void start_playing_in_background();
 
 protected:
     void play();

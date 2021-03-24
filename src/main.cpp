@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    player.start();
+    player.start_playing_in_background();
 
     for (std::string line; std::getline(std::cin, line);) {
         try {
