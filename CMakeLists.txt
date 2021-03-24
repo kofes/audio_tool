@@ -8,8 +8,6 @@ configure_file(config.h.in ${PROJECT_SOURCE_DIR}/src/config.h @ONLY)
 set(CMAKE_CXX_STANDARD_REQUIRED 17)
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
-
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2)
 
 find_package(SDL2 REQUIRED)
