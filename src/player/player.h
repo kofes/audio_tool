@@ -14,6 +14,13 @@ public:
     ~player();
 
 public:
+    void add_tracks_to_queue(const std::string&);
+
+    void start();
+
+protected:
+    void play();
+
     void parse_array(const std::string&);
 
 protected:

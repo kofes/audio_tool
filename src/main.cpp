@@ -11,9 +11,11 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    player.start();
+
     for (std::string line; std::getline(std::cin, line);) {
         try {
-            player.parse_array(line);
+            player.add_tracks_to_queue(line);
         } catch(const std::exception& ex) {
             log::error() << ex.what() << '\n';
         }
