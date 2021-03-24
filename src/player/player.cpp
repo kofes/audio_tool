@@ -262,8 +262,6 @@ void player::start_playing_in_background() {
 }
 
 void player::play() {
-    using namespace std::chrono_literals;
-    
     while (true) {
         for (auto i = 0; i < count_tracks; ++i) {
             while (std::any_of(
