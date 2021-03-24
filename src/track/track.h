@@ -1,22 +1,22 @@
 #pragma once
 
+#include "track_controller.h"
+
 #include <SDL2/SDL.h>
 
 #include <string>
 
 namespace audio {
-
-
-	class track {
+	class track: public track_controller {
 	public:
 		track(std::string track_name);
 		~track();
 	public:
-		void play();
-		void stop();
-		bool is_playing();
-		void close();
-		std::string get_name();
+		void play() override;
+		void stop() override;
+		bool is_playing() override;
+		void close() override;
+		std::string get_name() override;
 	private:
 		unsigned int wav_length_;
 		unsigned char* wav_buffer_;
