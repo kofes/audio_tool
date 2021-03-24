@@ -64,6 +64,7 @@ public:
             throw std::runtime_error(osstream.str());
         }
 
+        // WARNING: Tested only on initial mp3 tracks from res folder!
         // Mix_OpenAudio(48000, MIX_DEFAULT_FORMAT, 1, 1024
         if (Mix_OpenAudio(48000, MIX_DEFAULT_FORMAT, 1, 1024) == -1) {
             std::ostringstream osstream;
